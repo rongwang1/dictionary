@@ -2,7 +2,7 @@
 <div>
  <div class="bodyContent">
    <div class='search'>
-    <input class='search-input' type="text" placeholder="请输入所要查询的关键字" v-model="searchname" @clear="getEveryday">
+    <input class='search-input' type="text" placeholder="请输入所要查询的关键字" v-model="searchname" value="" ref ="searchname" v-on:keyup="inputRef">
     <button class='btn' @click="getResult">查询</button>
    </div>
    <div class='content' v-if="isShow">
@@ -33,7 +33,7 @@
       </div>
       <div class="fayin">
         <div v-for="(value,index) in pronunciation" :key="index">
-           <button class="pronunciation"  v-for="(item,index) in value.duyin" :key="index" >{{value.yue + item}}<i class="iconfont icon-yinliang" style="color:white"></i></button>
+           <button class="pronunciation"  v-for="(item,index) in value.duyin" :key="index" >{{value.yue + item}}<i class="iconfont icon-yinliang" style="color:#ffffff"></i></button>
         </div>
         <div>
           <button class="liandu pronunciation">连读(常读音)</button>
@@ -63,7 +63,7 @@
         <p>相关例句</p>
       </div>
       <div class="commonCss liju" v-for="(item,index) in liju" :key="index">
-        <p>{{'粤：'+item.yue}}</p>
+        <p>{{'粤：'+item.yue}}<i class="iconfont icon-yinliang"></i></p>
         <p>{{'普：'+item.pu}}</p>
       </div>
       <div class="change">
@@ -81,7 +81,7 @@ export default {
     return {
       isShow: true,
       isLiju: true,
-      searchname: '靓仔',
+      searchname: '',
       pronunciation: [],
       ziyi: [],
       shiyi: [],
@@ -95,7 +95,19 @@ export default {
     this.getEveryday()
   },
   methods: {
+    inputRef () {
+      this.searchname = this.$refs.searchname.value
+      // console.log(this.$refs.searchname.value)
+      const searchValue = this.$refs.searchname.value
+      if (searchValue === '') {
+        this.isShow = true
+      }
+    },
     getResult () {
+      const searchValue = this.$refs.searchname.value
+      if (searchValue === '') {
+        alert('请输入关键字')
+      }
       const url = this.HOST + '/h5/dict/yueyu/?yue=' + this.searchname + '&t=1598604148.9315584&rsa=ca37e64736120c4ee5e37a83be11e258'
       this.$axios.get(url).then(res => {
         if (res.status !== 200) {
@@ -186,6 +198,7 @@ input::-webkit-input-placeholder{
   margin-left: .1rem
 }
 .liandu {
+  width: 45%;
   text-align: center
 }
 .words{
