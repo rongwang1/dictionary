@@ -1,12 +1,17 @@
 <template>
   <div id="app">
-    <router-view/>
+   <router-view/>
+   <TabBar></TabBar>
   </div>
 </template>
 
 <script>
+import TabBar from './pages/tabbar/tabBar'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    TabBar
+  }
 }
 </script>
 

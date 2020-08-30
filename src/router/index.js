@@ -1,15 +1,37 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '../components/Home'
+import Learn from '../pages/learn/Learn'
+import Words from '../pages/words/Words'
+import Fayin from '../pages/fayin/Fayin'
+import Setting from '../pages/setting/Setting'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/home',
-      name: Home,
-      component: Home
+      path: '/',
+      redirect: '/Learn'
+    },
+    {
+      path: '/Learn',
+      name: 'Learn',
+      component: Learn
+    },
+    {
+      path: '/Fayin',
+      name: 'Fayin',
+      component: Fayin
+    },
+    {
+      path: '/Words',
+      name: 'Words',
+      component: Words
+    },
+    {
+      path: '/Setting',
+      name: 'Setting',
+      component: Setting
     }
   ]
 })
