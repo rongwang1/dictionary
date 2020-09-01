@@ -62,7 +62,8 @@ export default {
   background: #ffffff;
 }
 .tab-item {
-  flex: 1
+  flex: 1;
+  line-height: 1.2
 }
 .tab-item i{
    font-size: .48rem;

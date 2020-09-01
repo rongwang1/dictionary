@@ -2,7 +2,7 @@
 <div>
  <div class="bodyContent">
    <div class='search'>
-    <input class='search-input' type="text" placeholder="请输入所要查询的关键字" v-model="searchname" value="" ref ="searchname" v-on:keyup="inputRef">
+    <input class='search-input' type="text" placeholder="请输入所要查询的关键字" v-model="searchname" value="" ref ="searchname" @:keyup="inputRef">
     <button class='btn' @click="getResult">查询</button>
    </div>
    <div class='content' v-if="isShow">
@@ -11,7 +11,7 @@
         <p>每日粤语一学</p>
       </div>
       <div class="words">
-          <p>粤语词汇: {{daily_word.word}}<span class="iconfont icon-yinliang"></span>
+          <p>粤语词汇: {{daily_word.word}}<audio  src=""><span class="iconfont icon-yinliang"></span></audio></p>
           <p>意思: {{daily_word.means}}</p>
           <p v-if="isLiju">例句：{{daily_word.liju}}</p>
       </div>
@@ -232,7 +232,13 @@ input::-webkit-input-placeholder{
   font-size: .6rem
  }
  .liju{
-  margin-bottom: .4rem
+  margin-bottom: .4rem;
+ }
+ .liju p{
+   display: flex
+ }
+ .liju p i {
+   justify-content: center
  }
  .commonCss {
   font-size: .31rem;
