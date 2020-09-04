@@ -2,7 +2,7 @@
 <div>
  <div class="bodyContent">
    <div class='search'>
-    <input class='search-input' type="text" placeholder="请输入所要查询的关键字" v-model="searchname" value="" ref ="searchname" @:keyup="inputRef">
+    <input class='search-input' type="text" placeholder="请输入所要查询的关键字" v-model="searchname" value="" ref="searchname" v-on:keyup="inputRef">
     <button class='btn' @click="getResult">查询</button>
    </div>
    <div class='content' v-if="isShow">
@@ -11,7 +11,7 @@
         <p>每日粤语一学</p>
       </div>
       <div class="words">
-          <p>粤语词汇: {{daily_word.word}}<audio  src=""><span class="iconfont icon-yinliang"></span></audio></p>
+          <p>粤语词汇: {{daily_word.word}}<span class="iconfont icon-yinliang"></span></p>
           <p>意思: {{daily_word.means}}</p>
           <p v-if="isLiju">例句：{{daily_word.liju}}</p>
       </div>
@@ -33,7 +33,7 @@
       </div>
       <div class="fayin">
         <div v-for="(value,index) in pronunciation" :key="index">
-           <button class="pronunciation"  v-for="(item,index) in value.duyin" :key="index" >{{value.yue + item}}<i class="iconfont icon-yinliang" style="color:#ffffff"></i></button>
+           <button class="pronunciation"  v-for="(item,index) in value.duyin" :key="index" >{{value.yue + item}}<audio id="audio" :src= 'mp3Url+item+".mp3"'></audio><i class="iconfont icon-yinliang" style="color:#ffffff" @click="audioPlay"></i></button>
         </div>
         <div>
           <button class="liandu pronunciation">连读(常读音)</button>
@@ -88,7 +88,8 @@ export default {
       cihui: [],
       liju: [],
       daily_word: {},
-      recent: []
+      recent: [],
+      mp3Url: ''
     }
   },
   created () {
@@ -120,19 +121,24 @@ export default {
         this.shiyi = res.data.data.shiyi
         this.cihui = res.data.data.cihui
         this.liju = res.data.data.liju
+        this.mp3Url = res.data.data.mp3_url
         this.isShow = false
       })
     },
     getEveryday () {
       const url = this.HOST + '/h5/dict/daily_word/?&t=1598604131.161542&rsa=514bafd2a1255ba6479493807f89be93'
       this.$axios.get(url).then(res => {
-        console.log(res.data)
+        console.log(res)
         this.daily_word = res.data.data.daily_word
         this.recent = res.data.data.recent
         if (this.daily_word.liju === '') {
           this.isLiju = false
         }
       })
+    },
+    audioPlay () {
+      var audio = document.querySelector('#audio')
+      audio.play()
     }
   }
 }
