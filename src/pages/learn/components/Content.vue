@@ -33,7 +33,7 @@
       </div>
       <div class="fayin">
         <div v-for="(value,index) in pronunciation" :key="index">
-           <button class="pronunciation"  v-for="(item,index) in value.duyin" :key="index" >{{value.yue + item}}<audio id="audio" :src= 'mp3Url+item+".mp3"'></audio><i class="iconfont icon-yinliang" style="color:#ffffff" @click="audioPlay"></i></button>
+           <button class="pronunciation"  v-for="(item,id) in value.duyin" :key="id">{{value.yue + item}}<audio id="audio" :src= 'mp3Url+item+".mp3"'></audio><i class="iconfont icon-yinliang" style="color:#ffffff"  @click="audioPlay(id)"></i></button>
         </div>
         <div>
           <button class="liandu pronunciation">连读(常读音)</button>
@@ -89,7 +89,8 @@ export default {
       liju: [],
       daily_word: {},
       recent: [],
-      mp3Url: ''
+      mp3Url: '',
+      audioArr: []
     }
   },
   created () {
@@ -136,9 +137,10 @@ export default {
         }
       })
     },
-    audioPlay () {
-      var audio = document.querySelector('#audio')
-      audio.play()
+    audioPlay (id) {
+      var audio = document.getElementsByTagName('audio')
+      console.log(audio[id])
+      audio[id].play()
     }
   }
 }
