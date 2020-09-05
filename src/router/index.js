@@ -7,7 +7,7 @@ import Setting from '../pages/setting/Setting'
 
 Vue.use(Router)
 
-export default new Router({
+const VueRouter = new Router({
   routes: [
     {
       path: '/',
@@ -16,22 +16,42 @@ export default new Router({
     {
       path: '/Learn',
       name: 'Learn',
-      component: Learn
+      component: Learn,
+      meta: {
+        title: '学习'
+      }
     },
     {
       path: '/Fayin',
       name: 'Fayin',
-      component: Fayin
+      component: Fayin,
+      meta: {
+        title: '发音'
+      }
     },
     {
       path: '/Words',
       name: 'Words',
-      component: Words
+      component: Words,
+      meta: {
+        title: '生词'
+      }
     },
     {
       path: '/Setting',
       name: 'Setting',
-      component: Setting
+      component: Setting,
+      meta: {
+        title: '设置'
+      }
     }
   ]
 })
+
+// 导航守卫(guard)
+VueRouter.beforeEach((to, from, next) => {
+  document.title = to.matched[0].meta.title
+  next()
+})
+
+export default VueRouter

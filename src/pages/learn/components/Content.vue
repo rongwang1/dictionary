@@ -33,7 +33,7 @@
       </div>
       <div class="fayin">
         <div v-for="(value,index) in pronunciation" :key="index">
-           <button class="pronunciation"  v-for="(item,id) in value.duyin" :key="id">{{value.yue + item}}<audio id="audio" :src= 'mp3Url+item+".mp3"'></audio><i class="iconfont icon-yinliang" style="color:#ffffff"  @click="audioPlay(id)"></i></button>
+           <button class="pronunciation"  v-for="(item,index) in value.duyin" :key="index">{{value.yue + item}}<audio id="audio" :src= 'mp3Url+item+".mp3"'></audio><i class="iconfont icon-yinliang" style="color:#ffffff"  @click="audioPlay(index)"></i></button>
         </div>
         <div>
           <button class="liandu pronunciation">连读(常读音)</button>
@@ -51,7 +51,7 @@
       </div>
       <ul v-for="(item,index) in shiyi" :key="index+'item'"  class="commonCss">
         <li>{{item.jieshi}}</li>
-        <li v-for="(value,index) in item.liju" :key="index">{{ value}}</li>
+        <li v-for="(value,index) in item.liju" :key="index">{{value}}</li>
       </ul>
       <div class="title">
         <p>相关词汇</p>
@@ -137,10 +137,10 @@ export default {
         }
       })
     },
-    audioPlay (id) {
+    audioPlay (index) {
       var audio = document.getElementsByTagName('audio')
-      console.log(audio[id])
-      audio[id].play()
+      console.log(audio)
+      audio[index].play()
     }
   }
 }
