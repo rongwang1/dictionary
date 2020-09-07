@@ -1,7 +1,7 @@
 <template>
 <div>
  <div class="bodyContent">
-   <div class='search'>
+   <div id='search'>
     <input class='search-input' type="text" placeholder="请输入所要查询的关键字" v-model="searchname" value="" ref="searchname" v-on:keyup="inputRef">
     <button class='btn' @click="getResult">查询</button>
    </div>
@@ -22,7 +22,7 @@
     </div>
     <div class="hotSearch">
        <ul v-for="(item,index) in recent" :key="index">
-         <li>{{item}}</li>
+         <li><a  @click="hotSearch(index)">{{item}}</a></li>
        </ul>
     </div>
     </div>
@@ -33,7 +33,7 @@
       </div>
       <div class="fayin">
         <div v-for="(value, valueIndex) in pronunciation" :key="valueIndex">
-          <button class="pronunciation"  v-for=" (item,itemIndex) in value.duyin" :key="itemIndex">{{value.yue + item}}<i class="iconfont icon-yinliang" style="color:#ffffff" @click="audioPlay()"><audio :src= 'mp3Url+item+".mp3"'></audio></i></button>
+          <button class="pronunciation"  v-for=" (item,itemIndex) in value.duyin" :key="itemIndex">{{value.yue + item}}<i class="iconfont icon-yinliang" style="color:#ffffff" @click="audioPlay(itemIndex)"><audio :src= 'mp3Url+item+".mp3"'></audio></i></button>
         </div>
         <div>
           <button class="liandu pronunciation">连读(常读音)</button>
@@ -69,6 +69,7 @@
       <div class="change">
         <button class="changeBtn jiucuo">纠错</button>
         <button class="changeBtn updata">刷新</button>
+        <button class="changeBtn back"  @click=back()>返回</button>
       </div>
     </div>
   </div>
@@ -104,6 +105,30 @@ export default {
         this.isShow = true
       }
     },
+    hotSearch (index) {
+      console.log(index)
+      this.$refs.searchname.value = this.recent[index]
+      const searchValue = this.$refs.searchname.value
+      if (searchValue === '') {
+        alert('请输入关键字')
+      }
+      const url = this.HOST + '/h5/dict/yueyu/?yue=' + searchValue + '&t=1598604148.9315584&rsa=ca37e64736120c4ee5e37a83be11e258'
+      this.$axios.get(url).then(res => {
+        if (res.status !== 200) {
+          console.log('暂无此结果')
+        }
+        console.log(res)
+        this.searchname = res.data.data.yue
+        this.pronunciation = res.data.data.pronunciation
+        this.ziyi = res.data.data.ziyi
+        this.shiyi = res.data.data.shiyi
+        this.cihui = res.data.data.cihui
+        this.liju = res.data.data.liju
+        this.mp3Url = res.data.data.mp3_url
+        this.isShow = false
+      })
+      document.getElementById('search').style.display = 'none'
+    },
     getResult () {
       const searchValue = this.$refs.searchname.value
       if (searchValue === '') {
@@ -136,7 +161,14 @@ export default {
         }
       })
     },
-    audioPlay () {
+    audioPlay (itemIndex) {
+      const audios = document.getElementsByTagName('audio')
+      audios[itemIndex].play()
+    },
+    back () {
+      this.isShow = true
+      document.getElementById('search').style.display = 'block'
+      this.searchname = ''
     }
   }
 }
@@ -144,11 +176,11 @@ export default {
 <style lang="less" scoped>
 .bodyContent{
   height:100%;
-  padding-bottom:1.4rem
+  padding-bottom:1rem
 }
-.search{
+#search{
   text-align: center;
-  padding-top: 2.5rem
+  padding-top: 1rem
 }
 .search-input{
   box-sizing: border-box;
@@ -231,6 +263,9 @@ input::-webkit-input-placeholder{
  .hotSearch li{
   line-height: .6rem
  }
+ .hotSearch li a{
+   color: #b81d07;
+ }
  .icon-yinliang {
   color:  #b81d07;
   font-size: .6rem
@@ -261,6 +296,6 @@ input::-webkit-input-placeholder{
   width: 1.5rem;
   background: #ffffff;
   font-weight: bold;
-  margin-right: 1rem
+  margin-right: .6rem
  }
 </style>
