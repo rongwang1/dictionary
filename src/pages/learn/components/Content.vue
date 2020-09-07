@@ -32,8 +32,8 @@
         <p>基本发音</p>
       </div>
       <div class="fayin">
-        <div v-for="(value,index) in pronunciation" :key="index">
-           <button class="pronunciation"  v-for="(item,index) in value.duyin" :key="index">{{value.yue + item}}<audio id="audio" :src= 'mp3Url+item+".mp3"'></audio><i class="iconfont icon-yinliang" style="color:#ffffff"  @click="audioPlay(index)"></i></button>
+        <div v-for="(value, valueIndex) in pronunciation" :key="valueIndex">
+          <button class="pronunciation"  v-for=" (item,itemIndex) in value.duyin" :key="itemIndex">{{value.yue + item}}<i class="iconfont icon-yinliang" style="color:#ffffff" @click="audioPlay()"><audio :src= 'mp3Url+item+".mp3"'></audio></i></button>
         </div>
         <div>
           <button class="liandu pronunciation">连读(常读音)</button>
@@ -89,8 +89,7 @@ export default {
       liju: [],
       daily_word: {},
       recent: [],
-      mp3Url: '',
-      audioArr: []
+      mp3Url: ''
     }
   },
   created () {
@@ -137,10 +136,7 @@ export default {
         }
       })
     },
-    audioPlay (index) {
-      var audio = document.getElementsByTagName('audio')
-      console.log(audio)
-      audio[index].play()
+    audioPlay () {
     }
   }
 }
